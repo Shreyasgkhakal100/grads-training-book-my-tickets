@@ -1,0 +1,33 @@
+{
+  "type": "@medlypharmacy/kotlin-projen.KotlinProject",
+  "name": "grads-training-book-my-tickets",
+  "rootProject": {
+    "features": [
+      "repos",
+      "extension",
+      "norm",
+      "pg"
+    ],
+    "plugins": [
+      {
+        "name": "jacoco"
+      },
+      {
+        "name": "org.jetbrains.kotlin.jvm",
+        "version": "1.6.20"
+      },
+      {
+        "name": "org.jetbrains.kotlin.kapt",
+        "version": "1.6.20"
+      },
+      {
+        "name": "org.jlleitschuh.gradle.ktlint",
+        "version": "10.3.0"
+      },
+      {
+        "name": "io.micronaut.application",
+        "version": "3.4.0"
+      }
+    ]
+  }
+}
