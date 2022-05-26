@@ -7,6 +7,7 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import javax.inject.Inject
@@ -21,6 +22,10 @@ class MovieApi(@Inject val movieService: MovieService) {
 
     @Post("/movies")
     fun saveMovie(@Body movieRequest: MovieRequest): MutableHttpResponse<Int> {
-        return HttpResponse.ok(movieService.save(movieRequest).id)
+        return try{
+            HttpResponse.ok(movieService.save(movieRequest).id)
+        }catch (e:Exception){
+            HttpResponse.unauthorized()
+        }
     }
 }
