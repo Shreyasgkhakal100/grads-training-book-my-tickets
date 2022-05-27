@@ -56,6 +56,23 @@ class MovieApiTest : BaseIntegrationSpec() {
                 |}
             """.trimMargin().trimIndent()
         }
+
+        "should return  for movies smaller than 5 min and longer than 6 hrs" {
+            // Given
+            val referenceDate = ZonedDateTime.of(2021, 5, 21, 11, 15, 0, 0, ZoneId.systemDefault())
+            val avengersMovie = newMovieRequest(
+                referenceDate.toInstant().toEpochMilli(),
+                referenceDate.plusMinutes(3).toInstant().toEpochMilli()
+            )
+
+            // When
+            val response = createNewMovie(avengersMovie)
+
+            // Then
+            response.status shouldBe HttpStatus.OK
+            response.status shouldBe Exce
+            response.body.get() shouldBe 1
+        }
     }
 
     private fun createNewMovie(avengersMovie: MovieRequest): HttpResponse<Any> {
