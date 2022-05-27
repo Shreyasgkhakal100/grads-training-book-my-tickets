@@ -1,24 +1,20 @@
 package com.demo.book.movie.service
 
 import com.demo.book.movie.entity.Movie
+import com.demo.book.movie.exception.InvalidMovieDurationException
 import com.demo.book.movie.repository.MovieRepository
 import com.demo.book.movie.request.MovieRequest
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.core.test.TestCase
 import io.kotest.core.test.TestResult
 import io.kotest.matchers.shouldBe
-import io.micronaut.http.HttpStatus
-import io.mockk.MockK
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.assertThrows
-import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import javax.sql.DataSource
-import javax.xml.crypto.Data
 
 class MovieServiceTest: StringSpec() {
     private val mockMovieRepository = mockk<MovieRepository>()
@@ -33,7 +29,7 @@ class MovieServiceTest: StringSpec() {
             val referenceDate = ZonedDateTime.of(2021, 6, 1, 9, 15, 0, 0, ZoneId.systemDefault())
             val movieService = MovieService(mockMovieRepository)
             val movieRequest = MovieRequest("Shaktiman", referenceDate.toInstant().toEpochMilli(), referenceDate.plusHours(-2).toInstant().toEpochMilli())
-            assertThrows<Exception> {
+            assertThrows<InvalidMovieDurationException> {
                 movieService.save(movieRequest)
             }
         }
@@ -42,7 +38,7 @@ class MovieServiceTest: StringSpec() {
             val referenceDate = ZonedDateTime.of(2021, 6, 1, 9, 15, 0, 0, ZoneId.systemDefault())
             val movieService = MovieService(mockMovieRepository)
             val movieRequest = MovieRequest("Shaktiman", referenceDate.toInstant().toEpochMilli(), referenceDate.plusHours(7).toInstant().toEpochMilli())
-            assertThrows<Exception> {
+            assertThrows<InvalidMovieDurationException> {
                 movieService.save(movieRequest)
             }
         }
