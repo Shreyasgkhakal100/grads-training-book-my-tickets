@@ -8,6 +8,7 @@ import com.demo.book.utils.post
 import io.kotest.matchers.shouldBe
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import org.junit.jupiter.api.assertThrows
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -55,6 +56,26 @@ class MovieApiTest : BaseIntegrationSpec() {
                 |  "endTime" : "2021-06-01 11:15:00.000"
                 |}
             """.trimMargin().trimIndent()
+        }
+
+        "should throw error if the data is invalid" {
+            //Given
+            val referenceDate = ZonedDateTime.of(2021, 5, 21, 11, 15, 0, 0, ZoneId.systemDefault())
+
+            val avengersMovie = newMovieRequest(
+                    referenceDate.toInstant().toEpochMilli(),
+                    referenceDate.plusMinutes(2).toInstant().toEpochMilli()
+                )
+
+
+            //When
+            val response = createNewMovie(avengersMovie)
+
+            //Then
+            assertThrows<Exception> {
+                response shouldBe HttpResponse.unauthorized()
+            }
+
         }
     }
 
