@@ -21,7 +21,7 @@ import javax.sql.DataSource
 import javax.xml.crypto.Data
 
 class MovieServiceTest: StringSpec() {
-    private val mockMovieRepository = mockk<MovieRepository>(relaxed = true)
+    private val mockMovieRepository = mockk<MovieRepository>()
 
     override fun afterEach(testCase: TestCase, result: TestResult) {
         super.afterEach(testCase, result)
@@ -47,11 +47,30 @@ class MovieServiceTest: StringSpec() {
             }
         }
 
-        "should get an Movie if the movie duration is between 5 min to 6 hours" {
-            val mockMovieRepository = mockk<MovieRepository>()
+        "should add an Movie if the movie duration is between 5 min to 6 hours" {
             val referenceDate = ZonedDateTime.of(2021, 6, 1, 9, 15, 0, 0, ZoneId.systemDefault())
             val movieRequest = MovieRequest("Shaktiman", referenceDate.toInstant().toEpochMilli(), referenceDate.plusHours(2).toInstant().toEpochMilli())
             val expected = Movie(0,"Shaktiman", LocalDateTime.of(2021, 6, 1, 9, 15, 0, 0), LocalDateTime.of(2021, 6, 1, 11, 15, 0, 0))
+            every { mockMovieRepository.save(movieRequest) } returns expected
+            val movieService = MovieService(mockMovieRepository)
+            val response = movieService.save(movieRequest);
+            response shouldBe expected
+        }
+
+        "should add an Movie if the movie duration is exactly 5 minutes" {
+            val referenceDate = ZonedDateTime.of(2021, 6, 1, 9, 15, 0, 0, ZoneId.systemDefault())
+            val movieRequest = MovieRequest("Shaktiman", referenceDate.toInstant().toEpochMilli(), referenceDate.plusMinutes(5).toInstant().toEpochMilli())
+            val expected = Movie(0,"Shaktiman", LocalDateTime.of(2021, 6, 1, 9, 15, 0, 0), LocalDateTime.of(2021, 6, 1, 9, 20, 0, 0))
+            every { mockMovieRepository.save(movieRequest) } returns expected
+            val movieService = MovieService(mockMovieRepository)
+            val response = movieService.save(movieRequest);
+            response shouldBe expected
+        }
+
+        "should add an Movie if the movie duration is exactly 6 hours" {
+            val referenceDate = ZonedDateTime.of(2021, 6, 1, 9, 15, 0, 0, ZoneId.systemDefault())
+            val movieRequest = MovieRequest("Shaktiman", referenceDate.toInstant().toEpochMilli(), referenceDate.plusHours(6).toInstant().toEpochMilli())
+            val expected = Movie(0,"Shaktiman", LocalDateTime.of(2021, 6, 1, 9, 15, 0, 0), LocalDateTime.of(2021, 6, 1, 15, 15, 0, 0))
             every { mockMovieRepository.save(movieRequest) } returns expected
             val movieService = MovieService(mockMovieRepository)
             val response = movieService.save(movieRequest);
