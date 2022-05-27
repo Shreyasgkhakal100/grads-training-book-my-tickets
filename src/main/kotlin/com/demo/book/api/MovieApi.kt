@@ -1,6 +1,7 @@
 package com.demo.book.api
 
 import com.demo.book.movie.entity.Movie
+import com.demo.book.movie.exception.InvalidMovieDurationException
 import com.demo.book.movie.service.MovieService
 import com.demo.book.movie.request.MovieRequest
 import io.micronaut.http.HttpResponse
@@ -24,8 +25,8 @@ class MovieApi(@Inject val movieService: MovieService) {
     fun saveMovie(@Body movieRequest: MovieRequest): MutableHttpResponse<Int> {
         return try{
             HttpResponse.ok(movieService.save(movieRequest).id)
-        }catch (e:Exception){
-            HttpResponse.unauthorized()
+        }catch (e: InvalidMovieDurationException){
+            HttpResponse.badRequest()
         }
     }
 }
