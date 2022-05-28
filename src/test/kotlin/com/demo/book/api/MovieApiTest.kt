@@ -8,6 +8,8 @@ import com.demo.book.utils.post
 import io.kotest.matchers.shouldBe
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.http.client.exceptions.HttpClientResponseException
+import org.junit.jupiter.api.assertThrows
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -16,11 +18,7 @@ class MovieApiTest : BaseIntegrationSpec() {
     init {
         "should save movie" {
             // Given
-            val referenceDate = ZonedDateTime.of(2021, 5, 21, 11, 15, 0, 0, ZoneId.systemDefault())
-            val avengersMovie = newMovieRequest(
-                referenceDate.toInstant().toEpochMilli(),
-                referenceDate.plusHours(2).toInstant().toEpochMilli()
-            )
+             val avengersMovie = newMovieRequest(duration=5000)
 
             // When
             val response = createNewMovie(avengersMovie)
@@ -32,12 +30,8 @@ class MovieApiTest : BaseIntegrationSpec() {
 
         "should get all saved movies" {
             // Given
-            val referenceDate = ZonedDateTime.of(2021, 6, 1, 9, 15, 0, 0, ZoneId.systemDefault())
             createNewMovie(
-                newMovieRequest(
-                    referenceDate.toInstant().toEpochMilli(),
-                    referenceDate.plusHours(2).toInstant().toEpochMilli()
-                )
+                newMovieRequest(duration = 5000)
             )
 
             // When
@@ -51,10 +45,21 @@ class MovieApiTest : BaseIntegrationSpec() {
                 |{
                 |  "id" : 1,
                 |  "title" : "Avengers",
-                |  "startTime" : "2021-06-01 09:15:00.000",
-                |  "endTime" : "2021-06-01 11:15:00.000"
+                |  "duration" : 5000
                 |}
             """.trimMargin().trimIndent()
+        }
+        "should throw error if the data is invalid" {
+            //Given
+            val avengersMovie = newMovieRequest(duration = 5000)
+
+            //When
+            try {
+                createNewMovie(avengersMovie)
+            }catch (e: HttpClientResponseException){
+                e.status shouldBe HttpStatus.BAD_REQUEST
+            }
+
         }
     }
 
@@ -65,11 +70,10 @@ class MovieApiTest : BaseIntegrationSpec() {
         )
     }
 
-    private fun newMovieRequest(startTime: Long, endTime: Long): MovieRequest {
+    private fun newMovieRequest(duration:Int): MovieRequest {
         return MovieRequest(
             "Avengers",
-            startTime,
-            endTime
+            duration
         )
     }
 }

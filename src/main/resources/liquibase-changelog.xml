@@ -7,4 +7,7 @@
 
     <include file="changelog/0.0.1-init.sql" relativeToChangelogFile="true"/>
     <include file="changelog/0.0.2-insert-movies.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/0.0.3-add-duration.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/0.0.4-create-shows.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/0.0.5-insert-shows.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
