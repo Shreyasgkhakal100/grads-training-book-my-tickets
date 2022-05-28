@@ -25,7 +25,7 @@ public class GetAllMoviesRowMapper : RowMapper<GetAllMoviesResult> {
 
 public class GetAllMoviesQuery : Query<GetAllMoviesParams, GetAllMoviesResult> {
   public override val sql: String = """
-      |SELECT * FROM movies
+      |SELECT * FROM movies;
       |""".trimMargin()
 
   public override val mapper: RowMapper<GetAllMoviesResult> = GetAllMoviesRowMapper()
