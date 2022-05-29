@@ -4,9 +4,6 @@ import com.demo.book.movie.entity.Movie
 import com.demo.book.movie.exception.InvalidMovieDurationException
 import com.demo.book.movie.repository.MovieRepository
 import com.demo.book.movie.request.MovieRequest
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,5 +21,9 @@ class MovieService(@Inject val movieRepository: MovieRepository) {
 
     fun allMovies(): List<Movie> {
         return movieRepository.findAll()
+    }
+
+    fun oneMovie(movieId: Int): Movie {
+        return movieRepository.findOne(movieId)
     }
 }

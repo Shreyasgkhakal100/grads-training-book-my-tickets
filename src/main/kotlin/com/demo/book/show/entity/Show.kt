@@ -1,5 +1,6 @@
 package com.demo.book.show.entity
 
+import com.demo.book.movie.entity.Movie
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.sql.Timestamp
 import java.time.LocalDateTime

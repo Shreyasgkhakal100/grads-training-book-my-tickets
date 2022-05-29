@@ -50,4 +50,19 @@ class ShowRepository(@Inject private val datasource: DataSource) {
         )
     }
 
+    fun findOne(id: Int): Show =  datasource.connection.use { connection ->
+        GetAllShowsQuery().query(
+            connection,
+            GetAllShowsParams()
+        )
+    }.map {
+        Show(
+            it.id,
+            it.title,
+            it.movieId,
+            it.startTime,
+            it.endTime
+        )
+    }.find { it.id == id } ?: throw IllegalArgumentException("Movie not found")
+
 }
