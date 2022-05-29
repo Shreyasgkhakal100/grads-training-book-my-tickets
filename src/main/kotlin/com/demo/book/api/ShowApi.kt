@@ -1,8 +1,10 @@
 package com.demo.book.api
 
+import com.demo.book.movie.exception.InvalidMovieDurationException
 import com.demo.book.movie.request.MovieRequest
 import com.demo.book.show.entity.Show
 import com.demo.book.show.entity.SingleShow
+import com.demo.book.show.exception.OverlappingShowTimingException
 import com.demo.book.show.request.ShowRequest
 import com.demo.book.show.service.ShowService
 import io.micronaut.http.HttpResponse
@@ -28,7 +30,11 @@ class ShowApi(@Inject val showService: ShowService) {
 
     @Post
     fun saveShows(@Body showRequest: ShowRequest): MutableHttpResponse<Int>{
-        return HttpResponse.ok(showService.save(showRequest).id)
+        return try{
+            HttpResponse.ok(showService.save(showRequest).id)
+        }catch (e: OverlappingShowTimingException){
+            HttpResponse.badRequest()
+        }
     }
 
 }

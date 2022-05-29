@@ -22,7 +22,7 @@ class ShowRepository(@Inject private val datasource: DataSource) {
                 showToSave.title,
                 showToSave.movieId,
                 Timestamp.from(Instant.ofEpochSecond(showToSave.startTime)),
-                Timestamp.from(Instant.ofEpochSecond(showToSave.startTime)),
+                Timestamp.from(Instant.ofEpochSecond(showToSave.endTime)),
             )
         )
     }.map {
@@ -65,4 +65,18 @@ class ShowRepository(@Inject private val datasource: DataSource) {
         )
     }.find { it.id == id } ?: throw IllegalArgumentException("Movie not found")
 
+    fun findOverlap(startTime : Long, endTime : Long): List<Show> = datasource.connection.use { connection ->
+        GetAllShowsQuery().query(
+            connection,
+            GetAllShowsParams()
+        )
+    }.map{
+        Show(
+            it.id,
+            it.title,
+            it.movieId,
+            it.startTime,
+            it.endTime
+        )
+    }.filter { (it.startTime!! <= Timestamp.from(Instant.ofEpochSecond(endTime))) and (Timestamp.from(Instant.ofEpochSecond(startTime)) <= it.endTime)}
 }
