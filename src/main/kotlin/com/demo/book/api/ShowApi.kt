@@ -1,6 +1,7 @@
 package com.demo.book.api
 
 import com.demo.book.movie.request.MovieRequest
+import com.demo.book.show.entity.AllShows
 import com.demo.book.show.entity.Show
 import com.demo.book.show.entity.SingleShow
 import com.demo.book.show.request.ShowRequest
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class ShowApi(@Inject val showService: ShowService) {
 
     @Get
-    fun allShows(): HttpResponse<List<Show>> {
+    fun allShows(): MutableHttpResponse<AllShows>? {
         return HttpResponse.ok(showService.allShows())
     }
 

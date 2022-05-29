@@ -1,5 +1,6 @@
 package com.demo.book.show.repository
 
+import com.demo.book.show.entity.AllShows
 import com.demo.book.show.entity.Show
 import com.demo.book.show.request.ShowRequest
 import norm.query
@@ -9,6 +10,7 @@ import show.SaveShowParams
 import show.SaveShowQuery
 import java.sql.Timestamp
 import java.time.Instant
+import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.sql.DataSource
@@ -22,7 +24,7 @@ class ShowRepository(@Inject private val datasource: DataSource) {
                 showToSave.title,
                 showToSave.movieId,
                 Timestamp.from(Instant.ofEpochSecond(showToSave.startTime)),
-                Timestamp.from(Instant.ofEpochSecond(showToSave.startTime)),
+                Timestamp.from(Instant.ofEpochSecond(showToSave.endTime)),
             )
         )
     }.map {
