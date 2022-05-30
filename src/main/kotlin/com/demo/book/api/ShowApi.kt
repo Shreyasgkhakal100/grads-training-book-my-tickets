@@ -8,6 +8,7 @@ import com.demo.book.show.exception.OverlappingShowTimingException
 import com.demo.book.show.request.ShowRequest
 import com.demo.book.show.service.ShowService
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
@@ -33,7 +34,7 @@ class ShowApi(@Inject val showService: ShowService) {
         return try{
             HttpResponse.ok(showService.save(showRequest).id)
         }catch (e: OverlappingShowTimingException){
-            HttpResponse.badRequest()
+            HttpResponse.status(HttpStatus.BAD_REQUEST, "Overlapping show timing")
         }
     }
 

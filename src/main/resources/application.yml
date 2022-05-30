@@ -4,6 +4,8 @@ micronaut:
   server:
     port: ${PORT:9000}
     context-path: /api
+    cors:
+      enabled: true
   http:
     client:
       read-timeout: 60
