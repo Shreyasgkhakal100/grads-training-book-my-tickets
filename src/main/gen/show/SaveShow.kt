@@ -28,7 +28,7 @@ public class SaveShowParamSetter : ParamSetter<SaveShowParams> {
 
 public class SaveShowRowMapper : RowMapper<SaveShowResult> {
   public override fun map(rs: ResultSet): SaveShowResult = SaveShowResult(
-  id = rs.getObject("id") as kotlin.Int,
+    id = rs.getObject("id") as kotlin.Int,
     title = rs.getObject("title") as kotlin.String,
     movieId = rs.getObject("movie_id") as kotlin.Int,
     startTime = rs.getObject("start_time") as java.sql.Timestamp,
