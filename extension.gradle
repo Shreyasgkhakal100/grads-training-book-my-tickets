@@ -24,6 +24,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
     implementation "io.micronaut:micronaut-validation"
     implementation 'com.medly:ktee:1.0.0'
+    implementation 'dev.medly:auth-token:0.0.3'
     implementation("io.micronaut.security:micronaut-security-annotations")
     implementation("io.micronaut.security:micronaut-security-jwt")
     runtimeOnly "ch.qos.logback:logback-classic"
